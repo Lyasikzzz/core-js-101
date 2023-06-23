@@ -220,8 +220,16 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let start = '(';
+  let end = ')';
+  if (isStartIncluded) start = '[';
+  if (isEndIncluded) end = ']';
+
+  if (a > b) {
+    return `${start}${b}, ${a}${end}`;
+  }
+  return `${start}${a}, ${b}${end}`;
 }
 
 
@@ -296,20 +304,21 @@ function isCreditCardNumber(ccn) {
 
   function reverseAndCheck(num) {
     let result = 0;
-    let qwe = 0;
-    const number = num.toString();
+    let count = 0;
+    const strNum = num.toString();
     // eslint-disable-next-line no-plusplus
-    for (let i = number.length - 1; i >= 0; i--) {
-      if (qwe % 2 === 0 || qwe === 0) {
-        if (((+number[i]) * 2).toString().length === 2) {
-          result += (+(((+number[i]) * 2).toString()[0]) + +(((+number[i]) * 2).toString()[1]));
+    for (let i = strNum.length - 1; i >= 0; i--) {
+      const number = +strNum[i];
+      if (count % 2 === 0 || count === 0) {
+        if ((number * 2).toString().length === 2) {
+          result += (+((number * 2).toString()[0]) + +((number * 2).toString()[1]));
         } else {
-          result += (+number[i]) * 2;
+          result += number * 2;
         }
       } else {
-        result += +number[i];
+        result += number;
       }
-      qwe += 1;
+      count += 1;
     }
     return result;
   }
@@ -380,8 +389,44 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  // eslint-disable-next-line prefer-const
+  let stack = [];
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < str.length; i++) {
+    // eslint-disable-next-line prefer-const
+    let x = str[i];
+    if (x === '(' || x === '[' || x === '{' || x === '<') {
+      stack.push(x);
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    if (stack.length === 0) return false;
+    let check;
+    // eslint-disable-next-line default-case
+    switch (x) {
+      case ')':
+        check = stack.pop();
+        if (check === '{' || check === '[' || check === '<') return false;
+        break;
+
+      case '}':
+        check = stack.pop();
+        if (check === '(' || check === '[' || check === '<') return false;
+        break;
+
+      case ']':
+        check = stack.pop();
+        if (check === '(' || check === '{' || check === '<') return false;
+        break;
+
+      case '>':
+        check = stack.pop();
+        if (check === '(' || check === '{' || check === '[') return false;
+    }
+  }
+  return (stack.length === 0);
 }
 
 

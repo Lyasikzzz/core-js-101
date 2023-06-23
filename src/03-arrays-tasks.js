@@ -631,6 +631,12 @@ function group(/* array, keySelector, valueSelector */) {
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(/* arr, childrenSelector */) {
+/*   const result = [];
+  // eslint-disable-next-line array-callback-return
+  arr.map((e) => {
+    result.push(childrenSelector(e.join()));
+  });
+  return result; */
   throw new Error('Not implemented');
 }
 
