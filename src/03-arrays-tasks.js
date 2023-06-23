@@ -302,8 +302,27 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const result = [];
+  let num = 0;
+
+  // eslint-disable-next-line func-names
+  const pushing = function (elem, array, count) {
+    if (num < count) {
+      array.push(elem);
+      num += 1;
+      pushing(elem, array, count);
+    } else {
+      num = 0;
+    }
+  };
+
+  // eslint-disable-next-line array-callback-return
+  arr.map((e) => {
+    pushing(e, result, arr.indexOf(e) + 1);
+  });
+
+  return result;
 }
 
 
